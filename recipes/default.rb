@@ -48,6 +48,7 @@ template node[:cakephp][:cake_source] + '/config/app.php' do
   mode "755"
   variables({
      :app_name      => node[:cakephp][:app_name],
+     :salt          => node[:cakephp][:salt],
      :login         => node[:cakephp][:db_user],
      :database      => node[:cakephp][:db_name],
      :password      => node[:cakephp][:db_password],

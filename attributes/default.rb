@@ -13,6 +13,12 @@ default[:cakephp][:secretpath] = "/vagrant/src/secrets/data_bag_key"
 # look for secret in file pointed to with cakephp attribute :secretpath
 data_bag_secret = Chef::EncryptedDataBagItem.load_secret("#{node[:cakephp][:secretpath]}")
 
+# Set security info from data_bag
+security_creds = Chef::EncryptedDataBagItem.load("passwords", "security", data_bag_secret)
+if data_bag_secret && security_passwords = security_creds[node.chef_environment]
+  default[:cakephp][:salt] = security_passwords['salt']
+end
+
 # Set MySQL info from data_bag
 mysqlinfo_creds = Chef::EncryptedDataBagItem.load("envs", "mysql", data_bag_secret)
 if data_bag_secret && mysql_envs = mysqlinfo_creds[node.chef_environment]
